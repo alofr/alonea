@@ -1,3 +1,40 @@
+# Dependencies
+# Folder ini berisi semua library yang di-install via npm.
+# Ukurannya sangat besar dan dapat di-generate ulang dengan 'npm install'.
+node_modules/
+
+# Environment variables
+# File ini berisi data SANGAT RAHASIA seperti private key dan URL RPC.
+# JANGAN PERNAH mengunggah file ini ke repository publik!
+.env
+
+# Hardhat files
+# Folder ini berisi hasil kompilasi kontrak (artifacts) dan cache.
+# Lebih baik tidak di-commit karena dapat di-generate ulang dengan 'npx hardhat compile'.
+artifacts/
+cache/
+
+# TypeChain
+# Jika Anda menggunakan TypeScript, folder ini akan dibuat otomatis.
+# Sama seperti artifacts, lebih baik tidak di-commit.
+typechain-types/
+
+# IDE and Editor files
+# File konfigurasi atau cache dari editor kode Anda (seperti VS Code).
+.vscode/
+.idea/
+
+# OS generated files
+# File yang dibuat otomatis oleh sistem operasi (Windows dan macOS).
+.DS_Store
+Thumbs.db
+
+# Logs
+# File log dari aplikasi.
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 # Logs
 logs
 *.log
