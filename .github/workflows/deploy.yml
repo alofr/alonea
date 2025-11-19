@@ -1,0 +1,48 @@
+# Nama workflow yang akan tampil di halaman Actions GitHub
+name: Deploy Alonea Token
+
+# Menentukan kapan workflow akan dijalankan
+on:
+  push:
+    branches:
+      - main      # Jalankan deploy ke testnet saat push ke branch 'main'
+      - deploy    # Jalankan deploy ke mainnet saat push ke branch 'deploy'
+
+# Jobs yang akan dijalankan
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # Menjalankan job pada mesin virtual Ubuntu
+
+    steps:
+      # Step 1: Checkout kode dari repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Gunakan versi Node.js LTS
+          cache: 'npm'       # Aktifkan cache untuk mempercepat instalasi
+
+      # Step 3: Install dependensi
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Deploy ke Testnet (Sepolia)
+      - name: Deploy to Testnet
+        if: github.ref == 'refs/heads/main' # Hanya jalankan jika push ke branch 'main'
+        run: npx hardhat run scripts/deploy.js --network sepolia
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          RPC_URL_TESTNET: ${{ secrets.RPC_URL_TESTNET }}
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+
+      # Step 5: Deploy ke Mainnet
+      - name: Deploy to Mainnet
+        if: github.ref == 'refs/heads/deploy' # Hanya jalankan jika push ke branch 'deploy'
+        run: npx hardhat run scripts/deploy.js --network mainnet
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          RPC_URL_MAINNET: ${{ secrets.RPC_URL_MAINNET }}
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
